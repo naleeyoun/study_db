@@ -27,7 +27,7 @@ select * from cafe where name='별다방' and tableN=1 and chair=2;
 select * from cafe where name='동네커피' or name='시장카페';
 
 select * from cafe where chair <80;
-select * from cafe where chair >80;
+select name, ceo from cafe where chair >80;
 select * from cafe where chair <= 80;
 select * from cafe where chair >=80;
 
