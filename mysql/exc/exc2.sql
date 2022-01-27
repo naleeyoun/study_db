@@ -59,8 +59,8 @@ select
 	a.no
 	, a.name
 	, a.publisher_cd
-	, getPublisherName -- 함수, function
-from book3 as a;
+from book3 as a
+inner join publisher as b on b.no = a.publisher_cd;
 
 select
 	a.no
@@ -72,3 +72,5 @@ from book3 as a;
 delete from publisher
 where
 	no = 4;
+    
+    
