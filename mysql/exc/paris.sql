@@ -315,7 +315,7 @@ insert into project (
 
 select * from phone;
 
-insert into phone (
+insert into phone (sleepsleep
 defaultNy
 ,codeCd
  , firstNumberCd
@@ -331,5 +331,9 @@ defaultNy
 ,'yina'
 
 );
+
+select * from slhobbyhobbyeep;
+
+desc sleep;
 
 select * from hobby;
