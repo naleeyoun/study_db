@@ -336,4 +336,11 @@ select * from slhobbyhobbyeep;
 
 desc sleep;
 
-select * from hobby;
+select * from ;
+
+select 
+name
+, id
+genderCd
+,(select name from code where codeGroup_seq='infra002' and code=genderCd) as company
+from infrmember;
