@@ -170,7 +170,7 @@ DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci
 COMMENT = '모바일, 전화번호, 팩스번호';
 
-select * from phone;
+select * from infrmphone;
 
 CREATE TABLE IF NOT EXISTS `hobby` (
   `seq` INT NOT NULL AUTO_INCREMENT,
@@ -230,7 +230,7 @@ DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci
 COMMENT = '회원휴면정보';
 
-select * from sleep;
+select * from infrmsleep;
 
 CREATE TABLE IF NOT EXISTS `sns` (
   `seq` INT NOT NULL AUTO_INCREMENT,
@@ -252,7 +252,7 @@ DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci
 COMMENT = 'sns, 홈페이지';
 
-select * from sns;
+select * from infrmsns;
 
 CREATE TABLE IF NOT EXISTS `infrcodeGroup` (
   `seq` VARCHAR(45) NOT NULL,
@@ -276,8 +276,8 @@ CREATE TABLE IF NOT EXISTS `infrcode` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-select * from infrcode;
-select * from infrcodegroup;
+select * from infrmcode;
+select * from infrmcodegroup;
 
 insert into infrcodegroup (
 	seq
@@ -317,7 +317,8 @@ insert into project (
     , 'yina'
 );
 
-select * from phone;
+select * from infrmphon;
+desc inf1rmphone;
 
 insert into phone (sleepsleep
 defaultNy
@@ -336,11 +337,11 @@ defaultNy
 
 );
 
-select * from slhobbyhobbyeep;
+select * from infrmhobby;
 
 desc sleep;
 
-select * from ;
+select * from infrmaddress;
 
 select 
 name
@@ -348,3 +349,6 @@ name
 genderCd
 ,(select name from code where codeGroup_seq='infra002' and code=genderCd) as company
 from infrmember;
+
+
+select * from infrmpassword;
