@@ -346,9 +346,25 @@ select * from infrmaddress;
 select 
 name
 , id
-genderCd
-,(select name from code where codeGroup_seq='infra002' and code=genderCd) as company
+,genderCd
+,(select name from infrmcode a
+left join infrmcodegroup b on b.infrcodeGroup_seq='infrMember002' and a.code=infrmember.genderCd) as '성별'
 from infrmember;
 
 
-select * from infrmpassword;
+select * from infrmcodegroup;
+select * from infrmcode;
+select * from infrmsleep;
+select * from infrmember;
+
+select 
+a.name as 이름
+, a.id as 아이디
+, a.birthday as 생년월일
+, b.address as 주소
+, c.fullPhoneNumber as 전화번호
+, d.sleepCd as 활성상태
+from infrmember a
+left join infrmaddress b on a.seq = b.infrMember_seq
+left join infrmphone c on a.seq = c.infrMember_seq
+left join infrmsleep d on a.seq = d.infrMember_seq;
