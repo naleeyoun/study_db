@@ -56,27 +56,31 @@ insert into infrMember (
   ,emailMarketingCd
   ,emailMarketingDate
 ) values (
-   'samna',
-  '윤삼나',
-  '비밀번호입니다',
-  'yina',
- 2,
- '1111-01-11',
+   'sipilna',
+  '십일나',
+  '91292EA1108F0945D549AB867C332EB274822AC99C8E015A31F7FC02E6959F8F',
+  'tlqdlfsk0105',
+  2,
+ '2010-03-24',
   '1',
-  '/yina/photo/photo2.png',
-  'www.daum.com',
-  '2',
-  '2',
-  '',
+  '/yina/photo/photo8.png',
+  'www.naver.com',
   '1',
-  'yellow',
-  '2',
-  '20220128152900',
   '1',
-  '20220128152900',
+  '2015-08-08',
+  2,
+  'red',
   '2',
-  '20220128152900'
+  '20220203131400',
+  '2',
+  '20220203131400',
+  '2',
+  '20220203131400'
 );
+
+
+update infrmember set childrenCd=2 where seq="8";
+
 
 CREATE TABLE IF NOT EXISTS `address` (
   `seq` INT NOT NULL AUTO_INCREMENT,
@@ -293,7 +297,7 @@ insert into infrcode (
     , 'infrMember018'
 );
 
-select * from project;
+select * from infrmproject;
 
 insert into project (
 	name
