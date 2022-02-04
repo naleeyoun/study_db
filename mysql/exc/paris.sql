@@ -368,6 +368,7 @@ select
 a.seq as '회원번호'
 , a.name as '이름'
 , a.id as '아이디'
+, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember002' and a.genderCd = e.code) as '성별'
 , a.birthday as '생년월일'
 , (select name from infrmcode e where infrcodeGroup_seq = 'infrMember006' and a.jobCd = e.code) as '직업'
 , a.NationalityCd as '국적코드'
@@ -381,6 +382,8 @@ a.seq as '회원번호'
 , f.snstypeCd as 'sns타입코드'
 , (select name from infrmcode e where infrcodeGroup_seq = 'infrMember011' and f.snstypeCd = e.code) as 'sns타입'
 , f.url as 'sns주소'
+, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember013' and a.emailMarketingCd = e.code) as '이메일마케팅동의'
+, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember014' and a.mobileMarketingCd = e.code) as '이메일마케팅동의'
 from infrmember a
 left join infrmaddress b on a.seq = b.infrMember_seq
 left join infrmphone c on a.seq = c.infrMember_seq
