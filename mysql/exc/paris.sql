@@ -321,19 +321,19 @@ select * from infrmphon;
 desc inf1rmphone;
 
 insert into phone (sleepsleep
-defaultNy
-,codeCd
- , firstNumberCd
- , companyCd
- , infrMember_seq
- , infrMember_id
+	defaultNy
+	,codeCd
+	, firstNumberCd
+	, companyCd
+	, infrMember_seq
+	, infrMember_id
 ) values (
-1,
-1
-,1
-,1
-,1
-,'yina'
+	1,
+	1
+	,1
+	,1
+	,1
+	,'yina'
 
 );
 
@@ -344,10 +344,10 @@ desc sleep;
 select * from infrmaddress;
 
 select 
-name
-, id
-,genderCd
-,(select name from infrmcode a
+	name
+	, id
+	,genderCd
+	,(select name from infrmcode a
 left join infrmcodegroup b on b.infrcodeGroup_seq='infrMember002' and a.code=infrmember.genderCd) as '성별'
 from infrmember;
 
@@ -361,29 +361,31 @@ select * from infrmsns;
 select * from infrmemail;
 select * from infrmproject;
 
+update infrmsleep set sleepDate="2022-01-30 00:00:00"
+where seq="10";
 update infrmcode set name='비활성'
 where infrcodeGroup_seq='infrMember001' and code='2';
 
 select
-a.seq as '회원번호'
-, a.name as '이름'
-, a.id as '아이디'
-, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember002' and a.genderCd = e.code) as '성별'
-, a.birthday as '생년월일'
-, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember006' and a.jobCd = e.code) as '직업'
-, a.NationalityCd as '국적코드'
-, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember003' and a.NationalityCd = e.code) as '국적'
-, b.address as '주소'
-, c.fullPhoneNumber as '전화번호'
-, d.sleepCd as '활성상태코드'
-, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember001' and d.sleepCd = e.code) as '활성상태'
-, d.awakeDate as '활성시간'
-, d.sleepDate as '비활성시간'
-, f.snstypeCd as 'sns타입코드'
-, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember011' and f.snstypeCd = e.code) as 'sns타입'
-, f.url as 'sns주소'
-, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember013' and a.emailMarketingCd = e.code) as '이메일마케팅동의'
-, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember014' and a.mobileMarketingCd = e.code) as '이메일마케팅동의'
+	a.seq as '회원번호'
+	, a.name as '이름'
+	, a.id as '아이디'
+	, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember002' and a.genderCd = e.code) as '성별'
+	, a.birthday as '생년월일'
+	, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember006' and a.jobCd = e.code) as '직업'
+	, a.NationalityCd as '국적코드'
+	, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember003' and a.NationalityCd = e.code) as '국적'
+	, b.address as '주소'
+	, c.fullPhoneNumber as '전화번호'
+	, d.sleepCd as '활성상태코드'
+	, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember001' and d.sleepCd = e.code) as '활성상태'
+	, d.awakeDate as '활성시간'
+	, d.sleepDate as '비활성시간'
+	, f.snstypeCd as 'sns타입코드'
+	, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember011' and f.snstypeCd = e.code) as 'sns타입'
+	, f.url as 'sns주소'
+	, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember013' and a.emailMarketingCd = e.code) as '이메일마케팅동의'
+	, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember014' and a.mobileMarketingCd = e.code) as '이메일마케팅동의'
 from infrmember a
 left join infrmaddress b on a.seq = b.infrMember_seq
 left join infrmphone c on a.seq = c.infrMember_seq
@@ -395,4 +397,11 @@ select * from infrmphone;
 update infrmphone
 set fullphonenumber="01011111111" where seq="1";
 
-
+select
+	a.name
+	, a.id
+	, b.sleepDate
+	, (select name from infrmcode c where infrcodeGroup_seq = 'infrMember001' and b.sleepCd=c.code) as '회원상태'
+from infrmember a
+left join infrmsleep b on a.seq = b.infrMember_seq
+;
