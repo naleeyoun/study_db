@@ -355,16 +355,41 @@ from infrmember;
 select * from infrmcodegroup;
 select * from infrmcode;
 select * from infrmsleep;
+desc infrmsleep;
 select * from infrmember;
+select * from infrmsns;
+select * from infrmemail;
+select * from infrmproject;
 
-select 
-a.name as 이름
-, a.id as 아이디
-, a.birthday as 생년월일
-, b.address as 주소
-, c.fullPhoneNumber as 전화번호
-, d.sleepCd as 활성상태
+update infrmcode set name='비활성'
+where infrcodeGroup_seq='infrMember001' and code='2';
+
+select
+a.seq as '회원번호'
+, a.name as '이름'
+, a.id as '아이디'
+, a.birthday as '생년월일'
+, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember006' and a.jobCd = e.code) as '직업'
+, a.NationalityCd as '국적코드'
+, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember003' and a.NationalityCd = e.code) as '국적'
+, b.address as '주소'
+, c.fullPhoneNumber as '전화번호'
+, d.sleepCd as '활성상태코드'
+, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember001' and d.sleepCd = e.code) as '활성상태'
+, d.awakeDate as '활성시간'
+, d.sleepDate as '비활성시간'
+, f.snstypeCd as 'sns타입코드'
+, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember011' and f.snstypeCd = e.code) as 'sns타입'
+, f.url as 'sns주소'
 from infrmember a
 left join infrmaddress b on a.seq = b.infrMember_seq
 left join infrmphone c on a.seq = c.infrMember_seq
-left join infrmsleep d on a.seq = d.infrMember_seq;
+left join infrmsleep d on a.seq = d.infrMember_seq
+left join infrmsns f on a.seq = f.infrMember_seq;
+
+select * from infrmphone;
+
+update infrmphone
+set fullphonenumber="01011111111" where seq="1";
+
+

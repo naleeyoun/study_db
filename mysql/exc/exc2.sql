@@ -73,4 +73,5 @@ delete from publisher
 where
 	no = 4;
     
+
     
