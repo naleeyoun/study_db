@@ -363,11 +363,16 @@ select * from infrmproject;
 
 update infrmsleep set sleepDate="2022-01-30 00:00:00"
 where seq="10";
+
 update infrmcode set name='비활성'
 where infrcodeGroup_seq='infrMember001' and code='2';
 
+update infrmember set adminCd='1'
+where seq='10';
+
 select
 	a.seq as '회원번호'
+    , (select name from infrmcode e where infrcodeGroup_seq = 'infrMember019' and a.adminCd = e.code) as '등급'
 	, a.name as '이름'
 	, a.id as '아이디'
 	, (select name from infrmcode e where infrcodeGroup_seq = 'infrMember002' and a.genderCd = e.code) as '성별'
