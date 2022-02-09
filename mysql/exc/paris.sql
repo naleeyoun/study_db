@@ -339,7 +339,7 @@ insert into phone (sleepsleep
 
 select * from infrmhobby;
 
-desc sleep;
+desc infrmsleep;
 
 select * from infrmaddress;
 
@@ -353,6 +353,8 @@ from infrmember;
 
 
 select * from infrmcodegroup;
+use world;
+
 select * from infrmcode;
 select * from infrmsleep;
 desc infrmsleep;
