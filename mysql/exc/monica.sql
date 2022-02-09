@@ -275,5 +275,62 @@ VALUES
 , 2
 );
 
+INSERT INTO `nct`.`infrmembernationality`
+(
+`ifnaDelNy`,
+`regDateTime`,
+`regDateTimeSvr`,
+`modDateTime`,
+`modDateTimeSvr`,
+`ifmmSeq`,
+`ifnaSeq`
+)
+VALUES
+(
+	0 -- `ifnaDelNy`.
+	, now() -- `regDateTime`,
+	, now() -- `regDateTimeSvr`,
+	, now() -- `modDateTime`,
+	, now() -- `modDateTimeSvr`,
+	, 2 -- `ifmmSeq`,
+	, 2 -- `ifnaSeq`
+);
+
+
+
+use nct;
 desc infrmember;
-select * from infrmemberjoinqna;
+select * from infrmembernationality;
+select * from infrmembernationality;
+
+select * from  infrauthmenu;
+
+INSERT INTO `nct`.`infrmemberphone`
+(
+`ifmpDefaultNy`,
+`ifmpTypeCd`,
+`ifmpDiveceCd`,
+`ifmpTelecomCd`,
+`ifmpNumber`,
+`ifmpDelNy`,
+`regDateTime`,
+`regDateTimeSvr`,
+`modDateTime`,
+`modDateTimeSvr`,
+`ifmmSeq`
+)
+VALUES
+(
+	0 -- `ifmpDefaultNy`,
+	, 2 -- `ifmpTypeCd`,
+	, 1 -- `ifmpDiveceCd`,
+	, 2 -- `ifmpTelecomCd`,
+	, "07052143514" -- `ifmpNumber`,
+	, 0 -- `ifmpDelNy`,
+	, now() -- `regDateTime`,
+	, now() -- `regDateTimeSvr`,
+	, now() -- `modDateTime`,
+	, now() -- `modDateTimeSvr`,
+	, 2 -- `ifmmSeq`
+);
+
