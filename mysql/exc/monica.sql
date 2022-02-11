@@ -106,3 +106,4 @@ where 1=1
 use nct;
 select * from infrmemberphone;
 
+
