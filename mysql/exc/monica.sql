@@ -97,13 +97,17 @@ where 1=1
    -- a.ifcgseq asc
 	-- , a.ifcgName asc
    -- , b.ifcdSeq desc
-   -- , b.ifcdName desc
+   -- , b.ifinfrauthcdName desc
    -- , b.ifcdOrder asc
    -- , b.ifcdUseNy desc
    -- , b.ifcdDelNy desc
 ;
 
-use nct;
+use movie;
 select * from infrmemberphone;
 
 
+
+use nct;
+use cgv;
+select * from monica_dump;

@@ -412,3 +412,6 @@ select
 from infrmember a
 left join infrmsleep b on a.seq = b.infrMember_seq
 ;
+
+use nct;
+select * from infrauthmember;
