@@ -1,40 +1,62 @@
-CREATE TABLE IF NOT EXISTS `movie`.`mvCode` (
-  `mvcdSeq` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `mvcdSeqAnother` VARCHAR(50) NULL,
-  `mvcdName` VARCHAR(50) NOT NULL,
-  `mvcdNameEng` VARCHAR(50) NULL,
-  `mvcdNameLang1` VARCHAR(50) NULL,
-  `mvcdNameLang2` VARCHAR(50) NULL,
-  `mvcdNameLang3` VARCHAR(50) NULL,
-  `mvcdNameLang4` VARCHAR(50) NULL,
-  `mvcdNameLang5` VARCHAR(50) NULL,
-  `mvcdUseNy` TINYINT NULL,
-  `mvcdOrder` TINYINT NULL,
-  `mvcdReferenceV1` VARCHAR(50) NULL,
-  `mvcdReferenceV2` VARCHAR(50) NULL,
-  `mvcdReferenceV3` VARCHAR(50) NULL,
-  `mvcdReferenceI1` INT NULL,
-  `mvcdReferenceI2` INT NULL,
-  `mvcdReferenceI3` INT NULL,
-  `mvcdDelNy` TINYINT NOT NULL,
-  `regIp` VARCHAR(100) NULL,
-  `regSeq` BIGINT NULL,
-  `regDevice` TINYINT NULL,
-  `regDateTime` DATETIME NULL,
-  `regDateTimeSvr` DATETIME NULL,
-  `modIp` VARCHAR(100) NULL,
-  `modSeq` BIGINT NULL,
-  `modDevice` TINYINT NULL,
-  `modDateTime` DATETIME NULL,
-  `modDateTimeSvr` DATETIME NULL,
-  `mvcgSeq` BIGINT UNSIGNED NOT NULL,
-  PRIMARY KEY (`mvcdSeq`),
-  INDEX `fk_mvCode_mvCodeGroup1_idx` (`mvcgSeq` ASC) VISIBLE,
-  CONSTRAINT `fk_mvCode_mvCodeGroup1`
-    FOREIGN KEY (`mvcgSeq`)
-    REFERENCES `movie`.`mvCodeGroup` (`mvcgSeq`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_unicode_ci;
+INSERT INTO `movie`.`mvmember`
+(
+	`mvmmDelNy`,
+	`mvmmAdminNy`,
+	`mvmmDormancyNy`,
+	`mvmmName`,
+	`mvmmId`,
+	`mvmmPassword`,
+	`mvmmGenderCd`,
+	`mvmmDob`,
+	`mvmmSavedCd`,
+	`mvmmMarriageCd`,
+	`mvmmMarriageDate`,
+	`mvmmChildrenNum`,
+	`mvmmFavoriteColor`,
+	`mvmmRecommenderSeq`,
+	`mvmmEmailConsentNy`,
+	`mvmmSmsConsentNy`,
+	`mvmmPushConsentNy`,
+	`regDateTime`,
+	`regDateTimeSvr`,
+	`modDateTime`,
+	`modDateTimeSvr`
+)
+VALUES
+(
+	0 -- `mvmmDelNy`,
+	, 1 -- `mvmmAdminNy`,
+	, 0 -- `mvmmDormancyNy`,
+	, "윤이나" -- `mvmmName`,
+	, "yina" -- `mvmmId`,
+	, "4FA210A06F9FAA90AADCA1A977D784D5D4E95ED4C993A60B2D6C5F0BF5956633" -- `mvmmPassword`,
+	, 4 -- `mvmmGenderCd`,
+	, "2000-05-25" -- `mvmmDob`,
+	, -- `mvmmSavedCd`,
+	-- `mvmmMarriageCd`,
+	-- `mvmmMarriageDate`,
+	-- `mvmmChildrenNum`,
+	-- `mvmmFavoriteColor`,
+	-- `mvmmRecommenderSeq`,
+	-- `mvmmEmailConsentNy`,
+	-- `mvmmSmsConsentNy`,
+	-- `mvmmPushConsentNy`,
+	-- `regDateTime`,
+	-- `regDateTimeSvr`,
+	-- `modDateTime`,
+	-- `modDateTimeSvr`
+
+);
+
+
+
+
+use movie;
+select * from mvnationality;
+select * from mvmovie;
+select * from mvcode;
+select * from mvgenre;
+select * from mvcharacter;
+select * from mvscreen;
+select * from mvtime;
+select * from mvseat;
