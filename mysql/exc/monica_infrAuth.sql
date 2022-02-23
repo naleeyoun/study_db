@@ -50,3 +50,6 @@ from infrAuthMenu a
 	where 1=1
 		and a.ifatSeq = 1
 ;
+
+use nct;
+select * from infrnationality;

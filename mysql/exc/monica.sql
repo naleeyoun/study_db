@@ -105,7 +105,7 @@ where 1=1
 
 use movie;
 select * from infrmemberphone;
-
+select * from infrcodegroup;
 
 
 use nct;
