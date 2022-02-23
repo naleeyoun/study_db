@@ -151,7 +151,8 @@ select
     , mvtStartTime as '시작시간'
     , mvtEndTime as '종료시간'
     , concat_ws('', c.mvstRow, c.mvstCol) as '좌석 행/열'
-    , d.mvtcSeatReservedNy as '예매현황'
+--    , (select count(mvstRow) from mvseat)
+--    , d.mvtcSeatReservedNy as '예매현황'
 from mvtime a
 left join mvscreen b on a.mvsSeq = b.mvsSeq
 left join mvseat c on a.mvsSeq = c.mvsSeq
@@ -159,6 +160,7 @@ left join mvticketing d on c.mvsSeq = d.mvsSeq and c.mvstSeq = d.mvstSeq and a.m
 where 
 	b.mvsSeq = 2 
 	and a.mvsSeq = 2
+    and d.mvtcSeatReservedNy is null
 ;
     
 -- 예매 화면 (좌석 선택)
