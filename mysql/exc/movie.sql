@@ -68,6 +68,7 @@ select * from mvmembercoupon;
 select * from mvcodegroup;
 select * from mvmovie;
 select * from mvticketing;
+select * from mvseatreserve;
 
 
 -- 영화 페이지 조회
@@ -143,46 +144,128 @@ where
     and b.mvsOrder = 1
     and mvsTheaterCd = 91;
 
--- 예매 화면 (시간 선택)
+-- 예매 화면 (시간,좌석 선택)
 select 
 	mvtDate as '상영일'
-   , (select mvcdName from mvcode where mvcdSeq = b.mvsTheaterCd) as '극장'
- 	, (select mvcdName from mvcode where mvcdSeq = b.mvsScreenCd) as '상영관'
+	, (select mvcdName from mvcode where mvcdSeq = b.mvsTheaterCd) as '극장'
+    , (select mvcdName from mvcode where mvcdSeq = b.mvsScreenCd) as '상영관'
+    , mvtDate as '상영일'
     , mvtStartTime as '시작시간'
     , mvtEndTime as '종료시간'
-    , concat_ws('', c.mvstRow, c.mvstCol) as '좌석 행/열'
+	, concat_ws('', c.mvstRow, c.mvstCol) as '좌석 행/열'
+--   , d.mvsrSeatReservedNy as '예매현황'
+from mvtime a
+	left join mvscreen b on a.mvsSeq = b.mvsSeq
+	left join mvseat c on a.mvsSeq = c.mvsSeq
+	left join mvseatreserve d on a.mvtSeq = d.mvtSeq and c.mvstSeq = d.mvstSeq
+where 1=1
+ 	and b.mvsSeq = 2 
+ 	and d.mvsrSeatReservedNy is null
+;
+    
+
+select 
+	mvtDate as 'MovieDate'
+   , (select mvcdName from mvcode where mvcdSeq = b.mvsTheaterCd) as 'Area'
+ 	, (select mvcdName from mvcode where mvcdSeq = b.mvsScreenCd) as 'Screen'
+    , mvtStartTime as 'StartTime'
+    , mvtEndTime as 'EndTime'
+    , concat_ws('', c.mvstRow, c.mvstCol) as 'Seat'
 --    , (select count(mvstRow) from mvseat)
 --    , d.mvtcSeatReservedNy as '예매현황'
 from mvtime a
-left join mvscreen b on a.mvsSeq = b.mvsSeq
-left join mvseat c on a.mvsSeq = c.mvsSeq
-left join mvticketing d on c.mvsSeq = d.mvsSeq and c.mvstSeq = d.mvstSeq and a.mvtSeq = d.mvtSeq
-where 
-	b.mvsSeq = 2 
+	left join mvscreen b on a.mvsSeq = b.mvsSeq
+	left join mvseat c on a.mvsSeq = c.mvsSeq
+	left join mvticketing d on c.mvsSeq = d.mvsSeq and c.mvstSeq = d.mvstSeq and a.mvtSeq = d.mvtSeq
+where 1=1
+	and b.mvsSeq = 2 
 	and a.mvsSeq = 2
     and d.mvtcSeatReservedNy is null
-;
-    
--- 예매 화면 (좌석 선택)
-select 
-	b.mvtStartTime as '영화시간'
-	, a.mvstSeq
-     , concat_ws('', a.mvstRow, a.mvstCol) as '좌석 행/열'
-     , c.mvtcSeatReservedNy as '예매현황'
-	  
-    
+; 
+ 
+ 
+ 
+select count(mvstRow) from mvseat where mvsSeq = 2;
 
-from mvseat a
-left join mvtime b on a.mvsSeq = b.mvsSeq
-left join mvticketing c on a.mvsSeq = c.mvsSeq and b.mvtSeq = c.mvtSeq and a.mvstSeq = c.mvstSeq
-where b.mvsSeq = 2 and a.mvsSeq = 2
+
+ -- 결제 화면
+select
+ 	b.mvmName as '영화제목'
+ 	, c.mvtDate as '날짜'
+ 	, concat(substring(c.mvtStartTime,1,5),"~",substring(c.mvtEndTime,1,5)) as '시간'
+    , (select mvcdName from mvcode where mvcdSeq = d.mvsScreenCd) as '상영관'
+    , concat_ws("", a.mvtcNumber, "명") as '인원수'
+	, concat_ws("", a.mvtcPrice, "원") as '가격'
+   -- , (select mvcpName from mvmembercoupon where mvmmSeq = a.mvmmseq) as '쿠폰이름'
+ 	, concat_ws(',',(select mvcpName from mvmembercoupon where mvmmSeq = a.mvmmSeq and mvcpOrder = 1)
+ 		,(select mvcpName from mvmembercoupon where mvmmSeq = a.mvmmSeq and mvcpOrder = 2)
+ 		,(select mvcpName from mvmembercoupon where mvmmSeq = a.mvmmSeq and mvcpOrder = 3)
+		,(select mvcpName from mvmembercoupon where mvmmSeq = a.mvmmSeq and mvcpOrder = 4)) as '쿠폰이름'
+ 	, concat_ws('원,',(select mvcpPrice from mvmembercoupon where mvmmSeq = a.mvmmSeq and mvcpOrder = 1)
+ 		,(select mvcpPrice from mvmembercoupon where mvmmSeq = a.mvmmSeq and mvcpOrder = 2)
+ 		,(select mvcpPrice from mvmembercoupon where mvmmSeq = a.mvmmSeq and mvcpOrder = 3)
+		,(select mvcpPrice from mvmembercoupon where mvmmSeq = a.mvmmSeq and mvcpOrder = 4), '') as '쿠폰가격'	
+		, f.mvpTotalPoint as '사용가능포인트'
+		, concat_ws(',',(select mvcdName from mvcode where mvcdSeq = 114)
+			,(select mvcdName from mvcode where mvcdSeq = 115)
+			,(select mvcdName from mvcode where mvcdSeq = 116)
+			,(select mvcdName from mvcode where mvcdSeq = 117)
+            ,(select mvcdName from mvcode where mvcdSeq = 118)) as '결제방법'
+            
+from mvticketing a
+ 	left join mvmovie b on a.mvmSeq = b.mvmSeq
+    left join mvtime c on a.mvtSeq = c.mvtSeq
+    left join mvscreen d on a.mvsSeq = d.mvsSeq
+    left join mvmembercoupon e on a.mvmmSeq = e.mvmmSeq
+    left join mvmemberPoint f on a.mvmmSeq = f.mvmmSeq and f.mvpSeq = 3
+where 1=1
+	and a.mvmmSeq=1
+    and e.mvtcSeq is null
 ;
-  
-  
-select count(mvstRow) from mvseat where mvsSeq = 2
-    
-    
+
+
+select
+ 	b.mvmName as 'Movie'
+ 	, c.mvtDate as 'Date'
+ 	, concat(substring(c.mvtStartTime,1,5),"~",substring(c.mvtEndTime,1,5)) as 'Time'
+    , (select mvcdName from mvcode where mvcdSeq = d.mvsScreenCd) as 'Screen'
+    , concat_ws("", a.mvtcNumber, "명") as 'Number'
+	, concat_ws("", a.mvtcPrice, "원") as 'Price'
+   -- , (select mvcpName from mvmembercoupon where mvmmSeq = a.mvmmseq) as '쿠폰이름'
+ 	, concat_ws(',',(select mvcpName from mvmembercoupon where mvmmSeq = a.mvmmSeq and mvcpOrder = 1)
+ 		,(select mvcpName from mvmembercoupon where mvmmSeq = a.mvmmSeq and mvcpOrder = 2)
+ 		,(select mvcpName from mvmembercoupon where mvmmSeq = a.mvmmSeq and mvcpOrder = 3)
+		,(select mvcpName from mvmembercoupon where mvmmSeq = a.mvmmSeq and mvcpOrder = 4)) as 'Coupon'
+ 	, concat_ws('원,',(select mvcpPrice from mvmembercoupon where mvmmSeq = a.mvmmSeq and mvcpOrder = 1)
+ 		,(select mvcpPrice from mvmembercoupon where mvmmSeq = a.mvmmSeq and mvcpOrder = 2)
+ 		,(select mvcpPrice from mvmembercoupon where mvmmSeq = a.mvmmSeq and mvcpOrder = 3)
+		,(select mvcpPrice from mvmembercoupon where mvmmSeq = a.mvmmSeq and mvcpOrder = 4), '') as 'CouponPrice'	
+		, f.mvpTotalPoint as 'TotalPoint'
+		, concat_ws(',',(select mvcdName from mvcode where mvcdSeq = 114)
+			,(select mvcdName from mvcode where mvcdSeq = 115)
+			,(select mvcdName from mvcode where mvcdSeq = 116)
+			,(select mvcdName from mvcode where mvcdSeq = 117)
+            ,(select mvcdName from mvcode where mvcdSeq = 118)) as 'Pay'
+            
+from mvticketing a
+ 	left join mvmovie b on a.mvmSeq = b.mvmSeq
+    left join mvtime c on a.mvtSeq = c.mvtSeq
+    left join mvscreen d on a.mvsSeq = d.mvsSeq
+    left join mvmembercoupon e on a.mvmmSeq = e.mvmmSeq
+    left join mvmemberPoint f on a.mvmmSeq = f.mvmmSeq and f.mvpSeq = 3
+where 1=1
+	and a.mvmmSeq=1
+    and e.mvtcSeq is null
+;
 	
     
+select mvcpName from mvmembercoupon where mvcpUsedNy = 0 and mvmmSeq = a.mvmmseq;
+(select mvcName from mvcharacter where mvcCharacterTypeCd = 80 and mvmSeq = a.mvmSeq and mvcOrder = 2);
 
-
+select 
+	mvtcSeq
+    , mvtcNumber as 'Number'
+    , mvtcSeatReservedNy as 'SeatReservedNy'
+    , mvstSeq as 'SeatSeq'
+    , mvtcPrice as 'Price'
+from mvticketing;
