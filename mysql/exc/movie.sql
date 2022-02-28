@@ -294,19 +294,18 @@ select
  	, c.mvtDate as '날짜'
  	, concat(substring(c.mvtStartTime,1,5),"~",substring(c.mvtEndTime,1,5)) as '시간'
     , (select mvcdName from mvcode where mvcdSeq = d.mvsScreenCd) as '상영관'
-   , concat_ws("", a.mvtcNumber, "명") as '인원수'
+    , concat_ws("", a.mvtcNumber, "명") as '인원수'
  	, concat_ws("", a.mvtcPrice, "원") as '가격'
- 	 	,concat_ws(',',(select mvcpName from mvcoupon where mvcpSeq = e.mvcpSeq and  e.mvmcOrder = 1)
-  	 	,(select mvcpName from mvcoupon where mvcpSeq = e.mvcpSeq and  e.mvmcOrder = 2)
- 	 	,(select mvcpName from mvcoupon where mvcpSeq = e.mvcpSeq and  e.mvmcOrder = 3)
- 	 	,(select mvcpName from mvcoupon where mvcpSeq = e.mvcpSeq and  e.mvmcOrder = 4)) as '쿠폰이름'
+	, concat_ws('|',(select mvcpName from mvcoupon where mvcpSeq = e.mvcpSeq and  e.mvmcOrder = 1)
+		,(select mvcpName from mvcoupon where mvcpSeq = e.mvcpSeq and  e.mvmcOrder = 2)
+		,(select mvcpName from mvcoupon where mvcpSeq = e.mvcpSeq and  e.mvmcOrder = 3)
+		,(select mvcpName from mvcoupon where mvcpSeq = e.mvcpSeq and  e.mvmcOrder = 4)) as '쿠폰이름'
   	, concat_ws('원',(select mvcpPrice from mvcoupon where mvcpSeq = e.mvcpSeq and e.mvmcOrder = 1)
      	,(select mvcpPrice from mvcoupon where mvcpSeq = e.mvcpSeq and  e.mvmcOrder = 2)
   	 	,(select mvcpPrice from mvcoupon where mvcpSeq = e.mvcpSeq and  e.mvmcOrder = 3)
   	 	,(select mvcpPrice from mvcoupon where mvcpSeq = e.mvcpSeq and  e.mvmcOrder = 4), '') as '쿠폰가격'	
  		, f.mvpTotalPoint as '사용가능포인트'
-       
- 	, concat_ws(',',(select mvcdName from mvcode where mvcdSeq = 114)
+    , concat_ws('|',(select mvcdName from mvcode where mvcdSeq = 114)
  			,(select mvcdName from mvcode where mvcdSeq = 115) 			
             ,(select mvcdName from mvcode where mvcdSeq = 116) 			
             ,(select mvcdName from mvcode where mvcdSeq = 117)
