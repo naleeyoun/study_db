@@ -259,8 +259,13 @@ select a.mvcpName from mvcoupon a, mvticketing b, mvmembercoupon c where c.mvmmS
 
 use movie;
 
+        
+select * from mvcodegroup;
 
-select concat_ws('|',(select g.mvcpName from mvcoupon g, mvmembercoupon h where g.mvcpSeq = h.mvcpSeq and  h.mvmcOrder = 1 and h.mvmmSeq=1)
-		,(select g.mvcpName from mvcoupon g, mvmembercoupon h where g.mvcpSeq = h.mvcpSeq and  h.mvmcOrder = 2 and h.mvmmSeq=1)
-		,(select g.mvcpName from mvcoupon g, mvmembercoupon h where g.mvcpSeq = h.mvcpSeq and  h.mvmcOrder = 3 and h.mvmmSeq=1)
-		,(select g.mvcpName from mvcoupon g, mvmembercoupon h where g.mvcpSeq = h.mvcpSeq and  h.mvmcOrder = 4 and h.mvmmSeq=1)) as '쿠폰이름'
+select
+	a.mvcgSeq
+    , a.mvcgName
+from mvCodeGroup a
+where 1=1
+	and mvcgDelNy = 0
+    ;
