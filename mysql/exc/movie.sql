@@ -130,9 +130,12 @@ select
 from 
 	mvcode
     , mvscreen b 
-where 
-	mvcdSeq = b.mvsAreaCd 
-    and b.mvsOrder = 1;
+where 1 = 1  
+	and mvcdSeq = b.mvsAreaCd 
+    and b.mvsOrder = 1
+    and b.mvmSeq = 1
+    ;
+    
 
 -- 예매 화면 (극장 선택)
 select 
@@ -143,7 +146,9 @@ from
 where 
 	mvcdSeq = b.mvsTheaterCd 
     and b.mvsOrder = 1
-    and mvsTheaterCd = 91;
+    and mvsTheaterCd = 91
+    and b.mvmSeq = 1
+    ;
 
 -- 예매 화면 (시간,좌석 선택)
 select 
@@ -174,6 +179,9 @@ select * from mvticketing;
 select * from mvscreen;
 select * from mvtime;
 select * from mvmemberPoint;
+select * from mvticketing;
+select * from mvseatreserve;
+select * from mvseat;
 
 select mvcpName from mvmembercoupon where mvcpUsedNy = 0 and mvmmSeq = a.mvmmseq;
 (select mvcName from mvcharacter where mvcCharacterTypeCd = 80 and mvmSeq = a.mvmSeq and mvcOrder = 2);
@@ -252,6 +260,7 @@ select * from mvcoupon;
 select * from mvmember;
 select * from mvmembercoupon;
 desc mvmember;
+select * from mvcode;
 
 select mvcpName from mvcoupon;
 
@@ -269,3 +278,17 @@ from mvCodeGroup a
 where 1=1
 	and mvcgDelNy = 0
     ;
+
+
+		select
+			a.mvcgSeq
+		    , a.mvcgName
+		    , a.mvcgDelNy
+		from
+			mvCodeGroup a
+		where 1=1
+			and mvcgDelNy = 0
+			and mvcgSeq = 1;
+
+select * from mvCodeGroup;
+update mvCodeGroup set mvcgName = "test" where mvcgSeq = 25; 
