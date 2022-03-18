@@ -291,4 +291,141 @@ where 1=1
 			and mvcgSeq = 1;
 
 select * from mvCodeGroup;
+select * from mvCode;
 update mvCodeGroup set mvcgName = "test" where mvcgSeq = 25; 
+
+select * from mvmember;
+
+
+select
+				a.mvmmSeq
+				, a.mvmmId
+				, a.mvmmName
+				, a.mvmmDelNy
+				, (select mvcdName from mvCode where mvcdSeq = a.mvmmGenderCd) as 'gender'
+                , a.mvmmDob
+                , (select mvcdName from mvCode where mvcdSeq = a.mvmmSavedCd) as 'save'
+                , (select mvcdName from mvCode where mvcdSeq = a.mvmmMarriageCd) as 'marriage'
+                , a.mvmmChildrenNum
+                , a.mvmmAdminNy
+                , a.mvmmDormancyNy
+                , a.mvmmEmailConsentNy
+                , a.mvmmSmsConsentNy
+                , concat(substring(b.mvmpNumber,1,3),"-",substring(b.mvmpNumber,4,4),"-",substring(b.mvmpNumber,7,4)) as 'phone'
+       		from
+			mvMember a
+		left join mvMemberPhone b on a.mvmmSeq = b.mvmmSeq
+		where 1=1;
+        
+        select * from mvmemberemail;         
+        select * from mvmemberaddressonline; 
+		select concat(c.mvmeEmailAccount, "@", (select mvcdName from mvCode where mvcdSeq = c.mvmeEmailDomainCd)) as Email
+        from mvmemberemail c;
+        
+select * from mvmemberemail;
+select * from mvmemberphone;
+use movie;
+
+			insert into mvCode (
+				mvcdName
+				, mvcdDelNy
+				, mvcgSeq
+			) values (
+				'테스트'
+				, 0
+				, 27
+			);
+ 
+ select * from mvMemberPhone;
+ 
+ select * from mvmember;   
+ 
+select concat((mvmpNumber, 1, 3), (mvmpNumber, 4, 6), (mvmpNumber, 7, 9)) from mvMemberPhone where mvmmSeq=1;
+
+select * from mvcode;
+use movie;
+select * from mvscreen;
+select * from mvmember;
+
+select * from mvcodegroup
+limit 20, 10
+;
+
+select a.mvmmid from mvMember a, mvMember b where a.mvmmSeq = b.mvmmRecommenderSeq;
+select * from mvMember;
+select * from mvmembernationality;
+
+
+select count(*) from mvCode;
+select * from mvmemberemail;
+
+		select
+			count(*)
+		from
+			mvCode a, mvCodeGroup b
+		where 1=1
+			and mvcdDelNy = 0
+			
+			and a.mvcgSeq = b.mvcgSeq
+		order by
+			b.mvcgSeq
+			, a.mvcdSeq
+		limit 0, 10; 
+        
+select * from mvmemberemail;
+        
+			insert all into mvMember a, mvmemberemail b (
+				a.mvmmId
+				, a.mvmmName
+				, a.mvmmDelNy
+				, b.mvmeEmailAccount
+                , b.mvmeEmailDomainCd
+			) values (
+				'exam5'
+				, '시험을봤습니다'
+				, 0
+				, 'exam55555'
+				, 17
+
+			);
+            
+insert into mvMember (mvmmId, mvmmName, mvmmDelNy) values('exam5', '시험을봤습니다', 0);
+into mvmemberemail (mvmeEmailAccount, mvmeEmailDomainCd) values('exam55555', 17);
+
+select * from mvmemberhobby;
+select * from mvmemberphone;
+select mvmmConsentNy from mvmember;
+
+
+select
+				a.mvmmSeq
+				, a.mvmmId
+				, a.mvmmName
+				, a.mvmmDelNy
+				, (select mvcdName from mvCode where mvcdSeq = a.mvmmGenderCd) as 'gender'
+                , a.mvmmDob
+                , (select mvcdName from mvCode where mvcdSeq = a.mvmmSavedCd) as 'save'
+                , (select mvcdName from mvCode where mvcdSeq = a.mvmmMarriageCd) as 'marriage'
+                , a.mvmmChildrenNum
+                , a.mvmmAdminNy
+                , a.mvmmDormancyNy
+                , a.mvmmConsentNy
+                , a.mvmmEmailConsentNy
+                , a.mvmmSmsConsentNy
+                , a.mvmmFavoriteColor
+                , (select a.mvmmName from mvMember a where a.mvmmSeq = a.mvmmRecommenderSeq) as 'recommender'
+                , (select mvcdName from mvCode where mvcdSeq = b.mvmpDeviceCd) as 'device'
+                , concat(substring(b.mvmpNumber,1,3),"-",substring(b.mvmpNumber,4,4),"-",substring(b.mvmpNumber,7,4)) as 'phone'
+                , concat(c.mvmeEmailAccount, "@", (select mvcdName from mvCode where mvcdSeq = c.mvmeEmailDomainCd)) as 'email'
+                , d.mvaoTypeCd
+                , d.mvaoUrl
+               , concat_ws(",",(select f.mvcdName from mvCode f, mvMemberHobby e where f.mvcdSeq = e.mvmhHobbyCd and e.mvmhOrder=1)) as 'hobby'
+         	from
+				mvMember a
+			left join mvMemberPhone b on a.mvmmSeq = b.mvmmSeq
+			left join mvMemberEmail c on a.mvmmSeq = c.mvmmSeq
+			left join mvMemberAddressOnline d on a.mvmmSeq = d.mvmmSeq
+		-- 	inner join mvMemberHobby e on a.mvmmSeq = e.mvmmSeq
+			where 1=1
+				and a.mvmmDelNy = 0
+				and a.mvmmSeq = 1;
