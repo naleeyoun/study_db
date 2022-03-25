@@ -101,6 +101,9 @@ order by
 	a.mvmRangkingCd asc
 ;
 
+select * from mvgenre;
+select * from mvCode;
+select * from mvmovie;
 
 -- 예매 화면
 select
@@ -159,16 +162,72 @@ select
     , mvtStartTime as '시작시간'
     , mvtEndTime as '종료시간'
 	, concat_ws('', c.mvstRow, c.mvstCol) as '좌석 행/열'
---   , d.mvsrSeatReservedNy as '예매현황'
 from mvtime a
 	left join mvscreen b on a.mvsSeq = b.mvsSeq
 	left join mvseat c on a.mvsSeq = c.mvsSeq
 	left join mvseatreserve d on a.mvtSeq = d.mvtSeq and c.mvstSeq = d.mvstSeq
 where 1=1
+	and b.mvmSeq=1
  	and b.mvsSeq = 2 
+    and a.mvtSeq = 2
  	and d.mvsrSeatReservedNy is null
 ;
     
+
+ select * from mvtime;
+ select * from mvscreen;
+ 
+ 
+ -- 예매 화면 (userTicketing)
+		select
+			a.mvmSeq
+			, a.mvmName
+		    , (select mvcdName from mvCode where mvcdSeq = a.mvmAgeCd) as 'age'
+		    , a.mvmAgeCd
+		 	, a.mvmRunningTime
+		 	, a.mvmImage
+            , (select mvcdName from mvCode where mvcdSeq = b.mvsTheaterCd) as 'theater'
+            , (select mvcdName from mvCode where mvcdSeq = b.mvsTheaterCd and mvsAreaCd = 82) as 'seoul'
+            , (select mvcdName from mvCode where mvcdSeq = b.mvsTheaterCd and mvsAreaCd = 83) as 'kyunggy'
+            , (select mvcdName from mvCode where mvcdSeq = b.mvsTheaterCd and mvsAreaCd = 84) as 'incheon'
+            , concat(substring(c.mvtDate,9,2)) as 'date'
+            , concat(substring(c.mvtStartTime,1,5)) as 'startTime'
+            , concat(substring(c.mvtEndTime,1,5)) as 'endTime'
+		from mvMovie a
+        left join mvscreen b on a.mvmSeq = b.mvmSeq 
+        left join mvtime c on b.mvsSeq = c.mvsSeq
+		where 1 = 1
+			and a.mvmSeq = 1
+;
+ 
+ select * from mvtime;
+select * from mvscreen; 
+ 
+ -- 좌석 선택 (userSeat)
+select 
+	a.mvtDate as '상영일'
+	, (select mvcdName from mvcode where mvcdSeq = b.mvsTheaterCd) as '극장'
+    , (select mvcdName from mvcode where mvcdSeq = b.mvsScreenCd) as '상영관'
+    , a.mvtDate as '상영일'
+    , a.mvtStartTime as '시작시간'
+    , a.mvtEndTime as '종료시간'
+	, c.mvstRow as '좌석 행'
+    , c.mvstCol as '좌석 열'
+    , (select mvmName from mvmovie where mvmSeq = b.mvmSeq )as '영화제목'
+--   , d.mvsrSeatReservedNy as '예매현황'
+from mvtime a
+	left join mvscreen b on a.mvsSeq = b.mvsSeq
+	left join mvseat c on a.mvsSeq = c.mvsSeq
+	left join mvseatreserve d on a.mvtSeq = d.mvtSeq and c.mvstSeq = d.mvstSeq
+--     left join mvmovie e on a.mvmSeq = e.mvmSeq and b.mvmseq = e.mvmseq
+where 1=1
+	and b.mvmSeq=1
+ 	and b.mvsSeq = 2 
+    and a.mvtSeq = 2
+ 	and d.mvsrSeatReservedNy is null
+;
+
+select * from mvcodegroup;
 
  
 select count(mvstRow) from mvseat where mvsSeq = 2;
@@ -267,165 +326,105 @@ select mvcpName from mvcoupon;
 select a.mvcpName from mvcoupon a, mvticketing b, mvmembercoupon c where c.mvmmSeq = b.mvmmSeq and c.mvmcOrder = 1;
 
 use movie;
-
+select * from mvscreen;
         
 select * from mvcodegroup;
 
-select
-	a.mvcgSeq
-    , a.mvcgName
-from mvCodeGroup a
-where 1=1
-	and mvcgDelNy = 0
-    ;
-
-
 		select
-			a.mvcgSeq
-		    , a.mvcgName
-		    , a.mvcgDelNy
-		from
-			mvCodeGroup a
-		where 1=1
-			and mvcgDelNy = 0
-			and mvcgSeq = 1;
+			a.mvsSeq
+            ,(select mvcdName from mvCode where mvcdSeq = a.mvsTheaterCd) as 'theater'
+			, (select mvcdName from mvCode where mvcdSeq = a.mvsTheaterCd ) as 'seoul'
 
-select * from mvCodeGroup;
-select * from mvCode;
-update mvCodeGroup set mvcgName = "test" where mvcgSeq = 25; 
+		from mvScreen a
+		left join mvMovie b on a.mvmSeq = b.mvmSeq
+		where 1 = 1
+			and a.mvmSeq = 1;
+		
+select * from mvtime;
+		select
+			b.mvmSeq
+			, (select mvcdName from mvCode where mvcdSeq = a.mvsAreaCd) as 'theater'
+			, (select mvcdName from mvCode where mvcdSeq = a.mvsTheaterCd) as 'seoul'
+			, (select mvcdName from mvCode where mvcdSeq = a.mvsTheaterCd and mvsAreaCd = 83) as 'gyeonggi'
+			, (select mvcdName from mvCode where mvcdSeq = a.mvsTheaterCd and mvsAreaCd = 84) as 'incheon'
+		from mvScreen a
+		left join mvMovie b on a.mvmSeq = b.mvmSeq
+		where 1 = 1;
+ 
+ select * from mvscreen;
+ 
+		select
+            concat(substring(a.mvtStartTime,1,5)) as 'startTime'
+            , concat(substring(a.mvtEndTime,1,5)) as 'endTime'
+            , a.mvtDate
+            , b.mvsOrder
+            , (select mvcdName from mvCode where mvcdSeq = b.mvsScreenCd) as 'screen'
+     
+		from mvTime a
+		left join mvScreen b on a.mvsSeq = b.mvsSeq
+		where 1 = 1
+			and b.mvmSeq = 1
+			and a.mvsSeq = 2
+		 	and a.mvtDate = '2022-02-14'
+           
+            ;
+            
+select * from mvMemberEmail; 
 
-select * from mvmember;
-
-
-select
-				a.mvmmSeq
-				, a.mvmmId
-				, a.mvmmName
-				, a.mvmmDelNy
-				, (select mvcdName from mvCode where mvcdSeq = a.mvmmGenderCd) as 'gender'
-                , a.mvmmDob
-                , (select mvcdName from mvCode where mvcdSeq = a.mvmmSavedCd) as 'save'
-                , (select mvcdName from mvCode where mvcdSeq = a.mvmmMarriageCd) as 'marriage'
-                , a.mvmmChildrenNum
-                , a.mvmmAdminNy
-                , a.mvmmDormancyNy
-                , a.mvmmEmailConsentNy
-                , a.mvmmSmsConsentNy
-                , concat(substring(b.mvmpNumber,1,3),"-",substring(b.mvmpNumber,4,4),"-",substring(b.mvmpNumber,7,4)) as 'phone'
-       		from
-			mvMember a
-		left join mvMemberPhone b on a.mvmmSeq = b.mvmmSeq
-		where 1=1;
-        
-        select * from mvmemberemail;         
-        select * from mvmemberaddressonline; 
-		select concat(c.mvmeEmailAccount, "@", (select mvcdName from mvCode where mvcdSeq = c.mvmeEmailDomainCd)) as Email
-        from mvmemberemail c;
-        
-select * from mvmemberemail;
+			insert into mvMemberEmail (
+				mvmeEmailAccount
+				, mvmeEmailDomainCd
+				, mvmeDelNy
+				, mvmmSeq
+                , mvmeDefaultNy
+			) values (
+			"bbbbb"
+				, 16
+				, 0
+				, 16
+                , 0
+			);  
+            
 select * from mvmemberphone;
-use movie;
-
-			insert into mvCode (
-				mvcdName
-				, mvcdDelNy
-				, mvcgSeq
+			insert into mvMemberPhone (
+				mvmpDeviceCd
+				, mvmpNumber
+				, mvmpDelNy
+				, mvmmSeq
+				, mvmpDefaultNy
 			) values (
-				'테스트'
+				24
+				, 01024562154
 				, 0
-				, 27
+				, 16
+				, 0
 			);
- 
- select * from mvMemberPhone;
- 
- select * from mvmember;   
- 
-select concat((mvmpNumber, 1, 3), (mvmpNumber, 4, 6), (mvmpNumber, 7, 9)) from mvMemberPhone where mvmmSeq=1;
-
-select * from mvcode;
-use movie;
-select * from mvscreen;
-select * from mvmember;
-
-select * from mvcodegroup
-limit 20, 10
-;
-
-select a.mvmmid from mvMember a, mvMember b where a.mvmmSeq = b.mvmmRecommenderSeq;
-select * from mvMember;
 select * from mvmembernationality;
+select * from mvmemberaddress;
+select * from mvmemberhobby;
 
-
-select count(*) from mvCode;
-select * from mvmemberemail;
-
-		select
-			count(*)
-		from
-			mvCode a, mvCodeGroup b
-		where 1=1
-			and mvcdDelNy = 0
-			
-			and a.mvcgSeq = b.mvcgSeq
-		order by
-			b.mvcgSeq
-			, a.mvcdSeq
-		limit 0, 10; 
-        
-select * from mvmemberemail;
-        
-			insert all into mvMember a, mvmemberemail b (
-				a.mvmmId
-				, a.mvmmName
-				, a.mvmmDelNy
-				, b.mvmeEmailAccount
-                , b.mvmeEmailDomainCd
+			insert into mvMemberHobby (
+				mvmhHobbyCd		
+				, mvmmSeq
 			) values (
-				'exam5'
-				, '시험을봤습니다'
+				37
+				, 1
+			)
+;
+			insert into mvMemberAddress (
+				mvmaZipcode			
+				, mvmaAddress1
+				, mvmaAddress2		
+				, mvmaDelNy
+				, mvmmSeq
+				, mvmaDefaultNy
+			) values (
+				13245
+				, "인천광역시 계양구"
+				, "계산동 12345"
 				, 0
-				, 'exam55555'
-				, 17
-
+				, 16
+				, 1
 			);
             
-insert into mvMember (mvmmId, mvmmName, mvmmDelNy) values('exam5', '시험을봤습니다', 0);
-into mvmemberemail (mvmeEmailAccount, mvmeEmailDomainCd) values('exam55555', 17);
-
-select * from mvmemberhobby;
-select * from mvmemberphone;
-select mvmmConsentNy from mvmember;
-
-
-select
-				a.mvmmSeq
-				, a.mvmmId
-				, a.mvmmName
-				, a.mvmmDelNy
-				, (select mvcdName from mvCode where mvcdSeq = a.mvmmGenderCd) as 'gender'
-                , a.mvmmDob
-                , (select mvcdName from mvCode where mvcdSeq = a.mvmmSavedCd) as 'save'
-                , (select mvcdName from mvCode where mvcdSeq = a.mvmmMarriageCd) as 'marriage'
-                , a.mvmmChildrenNum
-                , a.mvmmAdminNy
-                , a.mvmmDormancyNy
-                , a.mvmmConsentNy
-                , a.mvmmEmailConsentNy
-                , a.mvmmSmsConsentNy
-                , a.mvmmFavoriteColor
-                , (select a.mvmmName from mvMember a where a.mvmmSeq = a.mvmmRecommenderSeq) as 'recommender'
-                , (select mvcdName from mvCode where mvcdSeq = b.mvmpDeviceCd) as 'device'
-                , concat(substring(b.mvmpNumber,1,3),"-",substring(b.mvmpNumber,4,4),"-",substring(b.mvmpNumber,7,4)) as 'phone'
-                , concat(c.mvmeEmailAccount, "@", (select mvcdName from mvCode where mvcdSeq = c.mvmeEmailDomainCd)) as 'email'
-                , d.mvaoTypeCd
-                , d.mvaoUrl
-               , concat_ws(",",(select f.mvcdName from mvCode f, mvMemberHobby e where f.mvcdSeq = e.mvmhHobbyCd and e.mvmhOrder=1)) as 'hobby'
-         	from
-				mvMember a
-			left join mvMemberPhone b on a.mvmmSeq = b.mvmmSeq
-			left join mvMemberEmail c on a.mvmmSeq = c.mvmmSeq
-			left join mvMemberAddressOnline d on a.mvmmSeq = d.mvmmSeq
-		-- 	inner join mvMemberHobby e on a.mvmmSeq = e.mvmmSeq
-			where 1=1
-				and a.mvmmDelNy = 0
-				and a.mvmmSeq = 1;
+            select 
