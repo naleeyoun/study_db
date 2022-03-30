@@ -426,5 +426,38 @@ select * from mvmemberhobby;
 				, 16
 				, 1
 			);
-            
-            select 
+            use movie;
+            select * from mvmember;
+            select * from mvmemberphone;
+select * from mvmemberaddress;
+
+update mvMember set
+mvmmDelNy = 0
+where 
+mvmmDelNy = 1;
+
+
+
+select regDateTime, mvmmSeq from mvmember
+ ;
+select * from mvmember;
+
+update mvMember set mvmmDelNy = 1, modDateTime = now() where 1=1 and mvmmSeq = 26;
+
+select mvmeEmailDomainCd from mvmemberemail;
+select * from mvmemberaddressonline;
+select * from mvcode;
+
+			insert into mvMemberAddressOnline (
+				mvaoTypeCd	
+				, mvaoUrl
+				, mvaoDelNy		
+				, mvaoDefaultNy
+               ,  mvmmSeq
+			) values (
+				33
+				, "www.yina.com"
+				, 0
+				, 1
+                , 16
+			);
